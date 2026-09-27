@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "LearnLoop AI"
+description = "A student-friendly learning companion that turns video lessons into focused flashcards and tracks review progress."
+version = "1.0.0"
+id = "artifacts/learnloop-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18383
+
+[services.development]
+run = "pnpm --filter @workspace/learnloop-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/learnloop-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/learnloop-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18383"
+BASE_PATH = "/"
